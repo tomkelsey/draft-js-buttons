@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   RichUtils,
   Entity,
-  EditorState,
 } from 'draft-js';
 
 export default ({ children }) => (
@@ -13,17 +12,23 @@ export default ({ children }) => (
       event.stopPropagation();
       const url = window.prompt('Enter URL');
       if (url) {
+        console.log(url);
         const entityKey = Entity.create('LINK', 'MUTABLE', { url });
+        console.log(1);
         const editorState = this.props.getEditorState();
-        const newEditorState = RichUtils.toggleLink(
-          editorState,
-          editorState.getSelection(),
-          entityKey,
+        console.log(2);
+        this.props.setEditorState(
+          RichUtils.toggleLink(
+            editorState,
+            editorState.getSelection(),
+            entityKey,
+          )
         );
-        EditorState.forceSelection(
-          newEditorState,
-          editorState.getCurrentContent().getSelectionAfter()
-        );
+        console.log(3);
+        // EditorState.forceSelection(
+        //   this.props.getEditorState(),
+        //   editorState.getCurrentContent().getSelectionAfter()
+        // );
       }
     }
 
