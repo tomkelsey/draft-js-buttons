@@ -14,7 +14,8 @@ export default ({ children }) => (
       const url = window.prompt('Enter/Paste URL...');
       const editorState = this.props.getEditorState();
       if (url) {
-        const entityKey = Entity.create('LINK', 'MUTABLE', { url });
+        console.log('url: ', url);
+        const entityKey = Entity.create('LINK', 'IMMUTABLE', { url });
         this.props.setEditorState(
           RichUtils.toggleLink(
             editorState,
