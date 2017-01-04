@@ -23,10 +23,12 @@ export default ({ children }) => (
           )
         );
       } else {
-        RichUtils.toggleLink(
-          editorState,
-          editorState.getSelection(),
-          null
+        this.props.setEditorState(
+          RichUtils.toggleLink(
+            editorState,
+            editorState.getSelection(),
+            null,
+          )
         );
       }
       EditorState.forceSelection(
