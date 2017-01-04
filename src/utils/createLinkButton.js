@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import {
+  RichUtils,
+  Entity,
+  EditorState,
+} from 'draft-js';
 
 export default ({ children }) => (
   class linkButton extends Component {
@@ -6,7 +11,20 @@ export default ({ children }) => (
     activate = (event) => {
       event.preventDefault();
       event.stopPropagation();
-      this.props.addLink();
+      const url = window.prompt('Enter URL');
+      if (url) {
+        const entityKey = Entity.create('LINK', 'MUTABLE', { url });
+        const editorState = this.props.getEditorState();
+        const newEditorState = RichUtils.toggleLink(
+          editorState,
+          editorState.getSelection(),
+          entityKey,
+        );
+        EditorState.forceSelection(
+          newEditorState,
+          editorState.getCurrentContent().getSelectionAfter()
+        );
+      }
     }
 
     preventBubblingUp = (event) => { event.preventDefault(); }
