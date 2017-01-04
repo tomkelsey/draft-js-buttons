@@ -11,10 +11,10 @@ export default ({ children }) => (
     activate = (event) => {
       event.preventDefault();
       event.stopPropagation();
-      const url = window.prompt('Enter URL');
+      const url = window.prompt('Enter/Paste URL...');
+      const editorState = this.props.getEditorState();
       if (url) {
         const entityKey = Entity.create('LINK', 'MUTABLE', { url });
-        const editorState = this.props.getEditorState();
         this.props.setEditorState(
           RichUtils.toggleLink(
             editorState,
@@ -22,11 +22,17 @@ export default ({ children }) => (
             entityKey,
           )
         );
-        EditorState.forceSelection(
+      } else {
+        RichUtils.toggleLink(
           editorState,
-          editorState.getCurrentContent().getSelectionAfter()
+          editorState.getSelection(),
+          null
         );
       }
+      EditorState.forceSelection(
+        editorState,
+        editorState.getCurrentContent().getSelectionAfter()
+      );
     }
 
     preventBubblingUp = (event) => { event.preventDefault(); }
