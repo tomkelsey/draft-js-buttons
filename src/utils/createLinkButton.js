@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-  RichUtils,
-  Entity,
-  EditorState,
-} from 'draft-js';
+import { RichUtils, EditorState } from 'draft-js';
 
 export default ({ children }) => (
   class linkButton extends Component {
@@ -14,7 +10,9 @@ export default ({ children }) => (
       const url = window.prompt('Enter/Paste URL...');
       const editorState = this.props.getEditorState();
       if (url) {
-        const entityKey = Entity.create('link', 'IMMUTABLE', { url });
+        const contentState = editorState.getCurrentContent();
+        const contentStateWithEntity = contentState.createEntity('link', 'IMMUTABLE', { url });
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
         this.props.setEditorState(
           RichUtils.toggleLink(
             editorState,
