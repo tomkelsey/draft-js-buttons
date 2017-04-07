@@ -13,10 +13,11 @@ export default ({ children }) => (
         const contentState = editorState.getCurrentContent();
         const contentStateWithEntity = contentState.createEntity('link', 'IMMUTABLE', { url });
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+        const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
         this.props.setEditorState(
           RichUtils.toggleLink(
-            editorState,
-            editorState.getSelection(),
+            newEditorState,
+            newEditorState.getSelection(),
             entityKey,
           )
         );
