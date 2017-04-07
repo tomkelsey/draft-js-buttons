@@ -9,21 +9,17 @@ export default ({ children }) => (
       event.stopPropagation();
       const url = window.prompt('Enter/Paste URL...');
       const editorState = this.props.getEditorState();
-      console.log(1);
       if (url) {
-        console.log(2);
         const contentState = editorState.getCurrentContent();
-        const contentStateWithEntity = contentState.createEntity('LINK', 'MUTABLE', { url });
+        const contentStateWithEntity = contentState.createEntity('link', 'IMMUTABLE', { url });
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-        const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
         this.props.setEditorState(
           RichUtils.toggleLink(
-            newEditorState,
-            newEditorState.getSelection(),
+            editorState,
+            editorState.getSelection(),
             entityKey,
           )
         );
-        console.log(3);
       } else {
         this.props.setEditorState(
           RichUtils.toggleLink(
